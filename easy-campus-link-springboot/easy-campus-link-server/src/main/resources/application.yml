@@ -1,3 +1,56 @@
+server:
+  port: ${campus-link.server.port}
+
 spring:
   application:
     name: easy-campus-link-server
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://${campus-link.db.mysql.host}:${campus-link.db.mysql.port}/easy_campus_aid?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${campus-link.db.mysql.username}
+    password: ${campus-link.db.mysql.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${campus-link.db.redis.host}
+      port: ${campus-link.db.redis.port}
+      password: ${campus-link.db.redis.password}
+      database: ${campus-link.db.redis.database}
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    org.flyingsparrow.campus: debug
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss:SSS
+  file:
+    path: "logs/${spring.application.name}"
+
+# ??springdoc-openapi?????????API
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '??????????'
+      paths-to-match: '/**'
+      packages-to-scan: 'org.flyingsparrow.campus.controller'
+
+# knife4j???????????????
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: ?????
+
